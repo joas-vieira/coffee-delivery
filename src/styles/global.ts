@@ -17,6 +17,6 @@ export const GlobalStyle = createGlobalStyle`
     font-family: 'Roboto', sans-serif;
     font-weight: 400;
     font-size: 1rem;
-    line-height: 130%;
+    line-height: 1.3;
   }
 `;
