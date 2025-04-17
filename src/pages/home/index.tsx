@@ -2,7 +2,15 @@ import { Coffee, Package, ShoppingCart, Timer } from '@phosphor-icons/react';
 import { useTheme } from 'styled-components';
 import heroBgImage from '../../assets/images/hero-bg.svg';
 import heroImage from '../../assets/images/hero.svg';
-import { Heading, HeadingContainer, HeadingContent, Info } from './styles';
+import {
+  CoffeeList,
+  Heading,
+  HeadingContainer,
+  HeadingContent,
+  Info
+} from './styles';
+import { CoffeeCard } from './components/coffee-card';
+import { mockCoffees } from '../../mocks/coffee';
 
 export function HomePage() {
   const theme = useTheme();
@@ -68,6 +76,16 @@ export function HomePage() {
 
         <img src={heroBgImage} id="heroBg" />
       </HeadingContainer>
+
+      <CoffeeList>
+        <h2>Nossos cafés</h2>
+
+        <div>
+          {mockCoffees.map((coffee) => (
+            <CoffeeCard key={coffee.id} coffee={coffee} />
+          ))}
+        </div>
+      </CoffeeList>
     </div>
   );
 }

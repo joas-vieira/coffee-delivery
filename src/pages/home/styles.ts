@@ -60,3 +60,23 @@ export const Info = styled.div`
     }
   }
 `;
+
+export const CoffeeList = styled.main`
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 10rem;
+  gap: 3.375rem;
+
+  h2 {
+    font-family: 'Baloo 2', cursive;
+    font-size: 2rem;
+    font-weight: 800;
+    color: ${(props) => props.theme['base-subtitle']};
+  }
+
+  > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    gap: 2.5rem 2rem;
+  }
+`;
