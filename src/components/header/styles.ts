@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { mixins } from '../../styles/mixins';
 
 export const HeaderContainer = styled.header`
   display: flex;
@@ -18,8 +19,8 @@ export const Aside = styled.div`
     padding: 0.5rem;
     background: ${(props) => props.theme['purple-light']};
     border-radius: 6px;
-    font-size: 0.875rem;
     color: ${(props) => props.theme['purple-dark']};
+    ${mixins.fonts.textS}
 
     svg {
       color: ${(props) => props.theme['purple']};

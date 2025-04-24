@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { mixins } from '../../../../styles/mixins';
 
 export const CoffeeCardContainer = styled.div`
   display: flex;
@@ -27,10 +28,9 @@ export const Tags = styled.div`
   gap: 0.25rem;
 
   span {
-    background: ${(props) => props.theme['yellow-light']};
+    ${mixins.fonts.tag}
     color: ${(props) => props.theme['yellow-dark']};
-    font-size: 0.625rem;
-    font-weight: 700;
+    background: ${(props) => props.theme['yellow-light']};
     padding: 0.25rem 0.5rem;
     text-transform: uppercase;
     border-radius: 6.25rem;
@@ -38,15 +38,13 @@ export const Tags = styled.div`
 `;
 
 export const Title = styled.h3`
-  font-family: 'Baloo 2', cursive;
-  font-size: 1.25rem;
-  font-weight: 700;
+  ${mixins.fonts.titleS}
   color: ${(props) => props.theme['base-subtitle']};
   margin-bottom: 0.5rem;
 `;
 
 export const Description = styled.p`
-  font-size: 0.875rem;
+  ${mixins.fonts.textS}
   color: ${(props) => props.theme['base-label']};
   margin-bottom: 2rem;
 `;
@@ -63,13 +61,12 @@ export const Price = styled.div`
   gap: 0.25rem;
 
   span:first-child {
-    font-size: 0.875rem;
+    ${mixins.fonts.textS}
     color: ${(props) => props.theme['base-text']};
   }
 
   span:last-child {
-    font-size: 1.5rem;
-    font-weight: 800;
+    ${mixins.fonts.titleM}
     color: ${(props) => props.theme['base-text']};
   }
 `;

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { mixins } from '../../styles/mixins';
 
 export const HeadingContainer = styled.section`
   position: relative;
@@ -32,14 +33,12 @@ export const Heading = styled.div`
   gap: 1rem;
 
   h1 {
-    font-family: 'Baloo 2', cursive;
-    font-size: 3rem;
-    font-weight: 800;
+    ${mixins.fonts.titleXL}
     color: ${(props) => props.theme['base-title']};
   }
 
   span {
-    font-size: 1.25rem;
+    ${mixins.fonts.textL}
     color: ${(props) => props.theme['base-subtitle']};
   }
 `;
@@ -68,9 +67,7 @@ export const CoffeeList = styled.main`
   gap: 3.375rem;
 
   h2 {
-    font-family: 'Baloo 2', cursive;
-    font-size: 2rem;
-    font-weight: 800;
+    ${mixins.fonts.titleL}
     color: ${(props) => props.theme['base-subtitle']};
   }
 
