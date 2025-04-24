@@ -2,7 +2,8 @@ import styled from 'styled-components';
 
 export const InputNumberContainer = styled.div`
   display: flex;
-  gap: 0.25rem;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem;
   border-radius: 0.375rem;
   background: ${({ theme }) => theme['base-button']};
