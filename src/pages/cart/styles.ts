@@ -6,6 +6,8 @@ export const CartContainer = styled.main`
   padding: 2.5rem 10rem;
   gap: 2rem;
   justify-content: space-between;
+  /* max-width: 70rem; */
+  /* margin: 0 auto; */
 `;
 
 export const Info = styled.section`
@@ -23,7 +25,8 @@ export const CartForm = styled.form`
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
-  width: 40rem; //TODO: Change to 100% when responsive
+  width: 100%;
+  min-width: 40rem;
 `;
 
 export const CardContainer = styled.div`
@@ -71,7 +74,8 @@ export const PaymentForm = styled.div`
 `;
 
 export const CartSummary = styled.div`
-  width: 28rem;
+  width: 100%;
+  min-width: 28rem;
   display: flex;
   flex-direction: column;
   background: ${(props) => props.theme['base-card']};
