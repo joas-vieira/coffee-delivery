@@ -24,9 +24,11 @@ import {
   Info,
   PaymentForm
 } from './styles';
+import { useNavigate } from 'react-router';
 
 export function CartPage() {
   const theme = useTheme();
+  const navigate = useNavigate();
 
   return (
     <CartContainer>
@@ -137,7 +139,9 @@ export function CartPage() {
             </div>
           </CartTotal>
 
-          <CheckoutButton type="submit">Confirmar pedido</CheckoutButton>
+          <CheckoutButton type="submit" onClick={() => navigate('/success')}>
+            Confirmar pedido
+          </CheckoutButton>
         </CartSummary>
       </Info>
     </CartContainer>
