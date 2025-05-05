@@ -77,9 +77,10 @@ export const Actions = styled.div`
   gap: 0.5rem;
 `;
 
-export const ShoppingCartButton = styled.button`
+export const ShoppingCartButton = styled.button<{ $itemAdded: boolean }>`
   display: flex;
-  background: ${(props) => props.theme['purple-dark']};
+  background: ${({ theme, $itemAdded }) =>
+    $itemAdded ? theme['yellow-dark'] : theme['purple-dark']};
   border-radius: 0.375rem;
   padding: 0.5rem;
   transition: background 0.2s;

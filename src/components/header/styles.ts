@@ -28,6 +28,7 @@ export const Aside = styled.div`
   }
 
   a {
+    position: relative;
     display: flex;
     align-items: center;
     padding: 0.5rem;
@@ -36,6 +37,22 @@ export const Aside = styled.div`
 
     svg {
       color: ${(props) => props.theme['yellow-dark']};
+    }
+
+    span {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      transform: translate(50%, -50%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.25rem;
+      height: 1.25rem;
+      border-radius: 50%;
+      background: ${(props) => props.theme['yellow-dark']};
+      color: ${(props) => props.theme.white};
+      ${mixins.fonts.textXS}
     }
   }
 `;
