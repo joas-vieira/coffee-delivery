@@ -25,10 +25,27 @@ import {
   PaymentForm
 } from './styles';
 import { useNavigate } from 'react-router';
+import { useCart } from '../../contexts/cart';
+import { useEffect } from 'react';
 
 export function CartPage() {
   const theme = useTheme();
   const navigate = useNavigate();
+  const { cart } = useCart();
+
+  const totalItemsPrice = cart.reduce((acc, item) => {
+    return acc + item.price * item.quantity;
+  }, 0);
+
+  const shippingPrice = 3.5;
+
+  const totalPrice = totalItemsPrice + shippingPrice;
+
+  useEffect(() => {
+    if (cart.length === 0) {
+      navigate('/');
+    }
+  }, [cart, navigate]);
 
   return (
     <CartContainer>
@@ -111,12 +128,12 @@ export function CartPage() {
       </Info>
 
       <Info>
-        <h2>Cafés selecionados </h2>
+        <h2>Cafés selecionados</h2>
 
         <CartSummary>
-          {Array.from({ length: 2 }).map((_, index) => (
-            <Fragment key={index}>
-              <CoffeeCard />
+          {cart.map((item) => (
+            <Fragment key={item.id}>
+              <CoffeeCard item={item} />
 
               <Separator style={{ margin: '2rem 0' }} />
             </Fragment>
@@ -125,17 +142,17 @@ export function CartPage() {
           <CartTotal>
             <div>
               <span>Total de itens</span>
-              <span>{toMoney(29.7)}</span>
+              <span>{toMoney(totalItemsPrice)}</span>
             </div>
 
             <div>
               <span>Entrega</span>
-              <span>{toMoney(3.5)}</span>
+              <span>{toMoney(shippingPrice)}</span>
             </div>
 
             <div>
               <span>Total</span>
-              <span>{toMoney(32.2)}</span>
+              <span>{toMoney(totalPrice)}</span>
             </div>
           </CartTotal>
 

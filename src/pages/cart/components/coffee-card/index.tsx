@@ -9,26 +9,36 @@ import {
   Title
 } from './styles';
 import { useTheme } from 'styled-components';
+import { ItemCart } from '../../../../contracts/item-cart';
+import { useCart } from '../../../../contexts/cart';
 
-export function CoffeeCard() {
+interface CoffeeCardProps {
+  item: ItemCart;
+}
+
+export function CoffeeCard({ item }: CoffeeCardProps) {
   const theme = useTheme();
+  const { removeItem } = useCart();
+
+  function handleRemoveItem() {
+    removeItem(item.id);
+  }
 
   return (
     <CoffeeCardContainer>
       <div>
-        <img src="/images/coffees/expresso.png" />
+        <img src={item.image} />
 
         <div>
-          <Title>Expresso Tradicional</Title>
+          <Title>{item.title}</Title>
 
           <Actions>
             <InputNumber
               onIncrement={() => {}}
               onDecrement={() => {}}
-              quantity={1}
+              quantity={item.quantity}
             />
-
-            <RemoveButton>
+            <RemoveButton onClick={handleRemoveItem}>
               <Trash color={theme.purple} />
               <span>Remover</span>
             </RemoveButton>
@@ -36,7 +46,7 @@ export function CoffeeCard() {
         </div>
       </div>
 
-      <Price>{toMoney(9.99)}</Price>
+      <Price>{toMoney(item.price)}</Price>
     </CoffeeCardContainer>
   );
 }
