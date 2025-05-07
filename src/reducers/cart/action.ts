@@ -2,7 +2,9 @@ import { ItemCart } from '../../contracts/item-cart';
 
 export enum CartActionTypes {
   ADD_ITEM = 'ADD_ITEM',
-  REMOVE_ITEM = 'REMOVE_ITEM'
+  REMOVE_ITEM = 'REMOVE_ITEM',
+  INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
+  DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY'
 }
 
 export type CartActions =
@@ -13,7 +15,10 @@ export type CartActions =
       };
     }
   | {
-      type: CartActionTypes.REMOVE_ITEM;
+      type:
+        | CartActionTypes.REMOVE_ITEM
+        | CartActionTypes.INCREMENT_ITEM_QUANTITY
+        | CartActionTypes.DECREMENT_ITEM_QUANTITY;
       payload: {
         itemId: ItemCart['id'];
       };
@@ -31,6 +36,27 @@ export function addItemAction(item: ItemCart): CartActions {
 export function removeItemAction(itemId: ItemCart['id']): CartActions {
   return {
     type: CartActionTypes.REMOVE_ITEM,
+    payload: {
+      itemId
+    }
+  };
+}
+
+export function incrementItemQuantityAction(
+  itemId: ItemCart['id']
+): CartActions {
+  return {
+    type: CartActionTypes.INCREMENT_ITEM_QUANTITY,
+    payload: {
+      itemId
+    }
+  };
+}
+export function decrementItemQuantityAction(
+  itemId: ItemCart['id']
+): CartActions {
+  return {
+    type: CartActionTypes.DECREMENT_ITEM_QUANTITY,
     payload: {
       itemId
     }

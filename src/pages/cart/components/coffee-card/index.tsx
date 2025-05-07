@@ -18,10 +18,19 @@ interface CoffeeCardProps {
 
 export function CoffeeCard({ item }: CoffeeCardProps) {
   const theme = useTheme();
-  const { removeItem } = useCart();
+  const { removeItem, incrementItemQuantity, decrementItemQuantity } =
+    useCart();
 
   function handleRemoveItem() {
     removeItem(item.id);
+  }
+
+  function handleIncrementItem() {
+    incrementItemQuantity(item.id);
+  }
+
+  function handleDecrementItem() {
+    decrementItemQuantity(item.id);
   }
 
   return (
@@ -34,8 +43,8 @@ export function CoffeeCard({ item }: CoffeeCardProps) {
 
           <Actions>
             <InputNumber
-              onIncrement={() => {}}
-              onDecrement={() => {}}
+              onIncrement={handleIncrementItem}
+              onDecrement={handleDecrementItem}
               quantity={item.quantity}
             />
             <RemoveButton onClick={handleRemoveItem}>

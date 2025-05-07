@@ -21,6 +21,7 @@ export function cartReducer(state: CartState, action: CartActions) {
         }
       });
     }
+
     case 'REMOVE_ITEM': {
       return produce(state, (draft) => {
         const itemToRemoveIndex = draft.cart.findIndex(
@@ -30,6 +31,31 @@ export function cartReducer(state: CartState, action: CartActions) {
         draft.cart.splice(itemToRemoveIndex, 1);
       });
     }
+
+    case 'INCREMENT_ITEM_QUANTITY': {
+      return produce(state, (draft) => {
+        const itemToIncrement = draft.cart.find(
+          (item) => item.id === action.payload.itemId
+        );
+
+        if (itemToIncrement) {
+          itemToIncrement.quantity += 1;
+        }
+      });
+    }
+
+    case 'DECREMENT_ITEM_QUANTITY': {
+      return produce(state, (draft) => {
+        const itemToDecrement = draft.cart.find(
+          (item) => item.id === action.payload.itemId
+        );
+
+        if (itemToDecrement && itemToDecrement.quantity > 1) {
+          itemToDecrement.quantity -= 1;
+        }
+      });
+    }
+
     default:
       return state;
   }
