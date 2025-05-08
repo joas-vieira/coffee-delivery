@@ -22,16 +22,45 @@ import {
   CartTotal,
   CheckoutButton,
   Info,
+  PaymentErrorMessage,
   PaymentForm
 } from './styles';
 import { useNavigate } from 'react-router';
 import { useCart } from '../../contexts/cart';
 import { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+const newOrderSchema = z.object({
+  cep: z.string().min(8, 'CEP deve ter 8 dígitos'),
+  street: z.string().min(1, 'Rua é obrigatória'),
+  number: z.string().min(1, 'Número é obrigatório'),
+  complement: z.string().optional(),
+  neighborhood: z.string().min(1, 'Bairro é obrigatório'),
+  city: z.string().min(1, 'Cidade é obrigatória'),
+  state: z.string().min(2, 'UF deve ter 2 dígitos'),
+  paymentMethod: z.enum(['credit', 'debit', 'money'], {
+    invalid_type_error: 'Método de pagamento é obrigatório'
+  })
+});
+
+type NewOrderFormData = z.infer<typeof newOrderSchema>;
 
 export function CartPage() {
   const theme = useTheme();
   const navigate = useNavigate();
   const { cart } = useCart();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors }
+  } = useForm<NewOrderFormData>({
+    resolver: zodResolver(newOrderSchema)
+  });
+
+  const paymentMethod = watch('paymentMethod');
 
   const totalItemsPrice = cart.reduce((acc, item) => {
     return acc + item.price * item.quantity;
@@ -40,6 +69,10 @@ export function CartPage() {
   const shippingPrice = 3.5;
 
   const totalPrice = totalItemsPrice + shippingPrice;
+
+  function handleCreateOrder(data: NewOrderFormData) {
+    console.log(data);
+  }
 
   useEffect(() => {
     if (cart.length === 0) {
@@ -52,7 +85,7 @@ export function CartPage() {
       <Info>
         <h2>Complete seu pedido</h2>
 
-        <CartForm>
+        <CartForm id="order" onSubmit={handleSubmit(handleCreateOrder)}>
           <CardContainer>
             <CardHeader>
               <MapPin size={22} color={theme['yellow-dark']} />
@@ -67,31 +100,45 @@ export function CartPage() {
               <InputText
                 placeholder="CEP"
                 containerProps={{ style: { gridArea: 'cep' } }}
+                error={errors.cep}
+                {...register('cep')}
               />
               <InputText
                 placeholder="Rua"
                 containerProps={{ style: { gridArea: 'street' } }}
+                error={errors.street}
+                {...register('street')}
               />
               <InputText
                 placeholder="Número"
                 containerProps={{ style: { gridArea: 'number' } }}
+                error={errors.number}
+                {...register('number')}
               />
               <InputText
                 placeholder="Complemento"
                 optional
                 containerProps={{ style: { gridArea: 'complement' } }}
+                error={errors.complement}
+                {...register('complement')}
               />
               <InputText
                 placeholder="Bairro"
                 containerProps={{ style: { gridArea: 'neighborhood' } }}
+                error={errors.neighborhood}
+                {...register('neighborhood')}
               />
               <InputText
                 placeholder="Cidade"
                 containerProps={{ style: { gridArea: 'city' } }}
+                error={errors.city}
+                {...register('city')}
               />
               <InputText
                 placeholder="UF"
                 containerProps={{ style: { gridArea: 'state' } }}
+                error={errors.state}
+                {...register('state')}
               />
             </AddressForm>
           </CardContainer>
@@ -110,19 +157,36 @@ export function CartPage() {
             </CardHeader>
 
             <PaymentForm>
-              <Radio isSelected={true} value={'credit'}>
+              <Radio
+                {...register('paymentMethod')}
+                isSelected={paymentMethod === 'credit'}
+                value={'credit'}
+              >
                 <CreditCard size={16} />
                 <span>Cartão de Crédito</span>
               </Radio>
-              <Radio isSelected={false} value={'credit'}>
+              <Radio
+                {...register('paymentMethod')}
+                isSelected={paymentMethod === 'debit'}
+                value={'debit'}
+              >
                 <Bank size={16} />
                 <span>Cartão de débito</span>
               </Radio>
-              <Radio isSelected={false} value={'credit'}>
+              <Radio
+                isSelected={paymentMethod === 'money'}
+                value={'money'}
+                {...register('paymentMethod')}
+              >
                 <Money size={16} />
                 <span>Dinheiro</span>
               </Radio>
             </PaymentForm>
+            {errors.paymentMethod && (
+              <PaymentErrorMessage role="alert">
+                {errors.paymentMethod.message}
+              </PaymentErrorMessage>
+            )}
           </CardContainer>
         </CartForm>
       </Info>
@@ -156,7 +220,7 @@ export function CartPage() {
             </div>
           </CartTotal>
 
-          <CheckoutButton type="submit" onClick={() => navigate('/success')}>
+          <CheckoutButton type="submit" form="order">
             Confirmar pedido
           </CheckoutButton>
         </CartSummary>

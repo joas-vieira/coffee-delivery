@@ -73,6 +73,12 @@ export const PaymentForm = styled.div`
   gap: 0.75rem;
 `;
 
+export const PaymentErrorMessage = styled.p`
+  ${mixins.fonts.textXS};
+  font-weight: 400;
+  color: red;
+`;
+
 export const CartSummary = styled.div`
   width: 100%;
   min-width: 28rem;
