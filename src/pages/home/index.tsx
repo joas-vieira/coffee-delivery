@@ -31,7 +31,6 @@ export function HomePage() {
             <Info>
               <div>
                 <ShoppingCart
-                  size={'2rem'}
                   weight="fill"
                   color={theme.background}
                   style={{ backgroundColor: theme['yellow-dark'] }}
@@ -41,7 +40,6 @@ export function HomePage() {
 
               <div>
                 <Package
-                  size={32}
                   weight="fill"
                   color={theme.background}
                   style={{ backgroundColor: theme['base-text'] }}
@@ -51,7 +49,6 @@ export function HomePage() {
 
               <div>
                 <Timer
-                  size={32}
                   weight="fill"
                   color={theme.background}
                   style={{ backgroundColor: theme.yellow }}
@@ -61,7 +58,6 @@ export function HomePage() {
 
               <div>
                 <Coffee
-                  size={32}
                   weight="fill"
                   color={theme.background}
                   style={{ backgroundColor: theme.purple }}

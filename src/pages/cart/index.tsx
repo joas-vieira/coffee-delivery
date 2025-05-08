@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   Bank,
   CreditCard,
@@ -5,11 +6,14 @@ import {
   MapPin,
   Money
 } from '@phosphor-icons/react';
+import { useForm } from 'react-hook-form';
 import { Fragment } from 'react/jsx-runtime';
 import { useTheme } from 'styled-components';
+import { z } from 'zod';
 import { InputText } from '../../components/form/input-text';
 import { Radio } from '../../components/form/radio';
 import { Separator } from '../../components/separator';
+import { useCart } from '../../contexts/cart';
 import { toMoney } from '../../utils/to-money';
 import { CoffeeCard } from './components/coffee-card';
 import {
@@ -25,12 +29,6 @@ import {
   PaymentErrorMessage,
   PaymentForm
 } from './styles';
-import { useNavigate } from 'react-router';
-import { useCart } from '../../contexts/cart';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
 const newOrderSchema = z.object({
   cep: z.string().min(8, 'CEP deve ter 8 dígitos'),
@@ -45,12 +43,11 @@ const newOrderSchema = z.object({
   })
 });
 
-type NewOrderFormData = z.infer<typeof newOrderSchema>;
+export type NewOrderFormData = z.infer<typeof newOrderSchema>;
 
 export function CartPage() {
   const theme = useTheme();
-  const navigate = useNavigate();
-  const { cart } = useCart();
+  const { cart, createOrder } = useCart();
   const {
     register,
     handleSubmit,
@@ -71,14 +68,12 @@ export function CartPage() {
   const totalPrice = totalItemsPrice + shippingPrice;
 
   function handleCreateOrder(data: NewOrderFormData) {
-    console.log(data);
-  }
-
-  useEffect(() => {
-    if (cart.length === 0) {
-      navigate('/');
+    if (!cart.length) {
+      return alert('Adicione itens ao carrinho');
     }
-  }, [cart, navigate]);
+
+    createOrder(data);
+  }
 
   return (
     <CartContainer>

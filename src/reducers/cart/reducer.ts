@@ -1,9 +1,11 @@
 import { produce } from 'immer';
 import { ItemCart } from '../../contracts/item-cart';
 import { CartActions } from './action';
+import { Order } from '../../contracts/order';
 
 interface CartState {
   cart: ItemCart[];
+  orders: Order[];
 }
 
 export function cartReducer(state: CartState, action: CartActions) {
@@ -53,6 +55,21 @@ export function cartReducer(state: CartState, action: CartActions) {
         if (itemToDecrement && itemToDecrement.quantity > 1) {
           itemToDecrement.quantity -= 1;
         }
+      });
+    }
+
+    case 'CREATE_ORDER': {
+      return produce(state, (draft) => {
+        const order: Order = {
+          ...action.payload.newOrder,
+          id: new Date().getTime(),
+          items: draft.cart
+        };
+
+        draft.cart = [];
+        draft.orders.push(order);
+
+        action.payload.callback(`/order/${order.id}/success`);
       });
     }
 

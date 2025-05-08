@@ -54,6 +54,8 @@ export const Info = styled.div`
     gap: 0.75rem;
 
     svg {
+      min-width: 2rem;
+      min-height: 2rem;
       padding: 0.5rem;
       border-radius: 50%;
     }

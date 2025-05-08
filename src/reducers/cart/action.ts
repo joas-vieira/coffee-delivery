@@ -1,10 +1,13 @@
+import { NavigateFunction } from 'react-router';
 import { ItemCart } from '../../contracts/item-cart';
+import { NewOrderFormData } from '../../pages/cart';
 
 export enum CartActionTypes {
   ADD_ITEM = 'ADD_ITEM',
   REMOVE_ITEM = 'REMOVE_ITEM',
   INCREMENT_ITEM_QUANTITY = 'INCREMENT_ITEM_QUANTITY',
-  DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY'
+  DECREMENT_ITEM_QUANTITY = 'DECREMENT_ITEM_QUANTITY',
+  CREATE_ORDER = 'CREATE_ORDER'
 }
 
 export type CartActions =
@@ -21,6 +24,13 @@ export type CartActions =
         | CartActionTypes.DECREMENT_ITEM_QUANTITY;
       payload: {
         itemId: ItemCart['id'];
+      };
+    }
+  | {
+      type: CartActionTypes.CREATE_ORDER;
+      payload: {
+        newOrder: NewOrderFormData;
+        callback: NavigateFunction;
       };
     };
 
@@ -52,6 +62,7 @@ export function incrementItemQuantityAction(
     }
   };
 }
+
 export function decrementItemQuantityAction(
   itemId: ItemCart['id']
 ): CartActions {
@@ -59,6 +70,19 @@ export function decrementItemQuantityAction(
     type: CartActionTypes.DECREMENT_ITEM_QUANTITY,
     payload: {
       itemId
+    }
+  };
+}
+
+export function createOrderAction(
+  newOrder: NewOrderFormData,
+  callback: NavigateFunction
+): CartActions {
+  return {
+    type: CartActionTypes.CREATE_ORDER,
+    payload: {
+      newOrder,
+      callback
     }
   };
 }

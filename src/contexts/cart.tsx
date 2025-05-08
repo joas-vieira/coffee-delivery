@@ -1,7 +1,16 @@
-import { createContext, ReactNode, useContext, useReducer } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useReducer
+} from 'react';
+import { useNavigate } from 'react-router';
 import { ItemCart } from '../contracts/item-cart';
+import { NewOrderFormData } from '../pages/cart';
 import {
   addItemAction,
+  createOrderAction,
   decrementItemQuantityAction,
   incrementItemQuantityAction,
   removeItemAction
@@ -14,6 +23,7 @@ interface CartContextType {
   removeItem: (itemId: ItemCart['id']) => void;
   incrementItemQuantity: (itemId: ItemCart['id']) => void;
   decrementItemQuantity: (itemId: ItemCart['id']) => void;
+  createOrder: (order: NewOrderFormData) => void;
 }
 
 export const CartContext = createContext<CartContextType>(
@@ -29,7 +39,25 @@ interface CartContextProviderProps {
 }
 
 export function CartContextProvider({ children }: CartContextProviderProps) {
-  const [cartState, dispatch] = useReducer(cartReducer, { cart: [] });
+  const navigate = useNavigate();
+  const [cartState, dispatch] = useReducer(
+    cartReducer,
+    {
+      cart: [],
+      orders: []
+    },
+    (cartState) => {
+      const storedStateAsJSON = localStorage.getItem(
+        '@coffee-delivery:cart-state-1.0.0'
+      );
+
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON);
+      }
+
+      return cartState;
+    }
+  );
 
   const { cart } = cartState;
 
@@ -49,6 +77,18 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     dispatch(decrementItemQuantityAction(itemId));
   }
 
+  function createOrder(order: NewOrderFormData) {
+    dispatch(createOrderAction(order, navigate));
+  }
+
+  useEffect(() => {
+    if (cartState) {
+      const stateJSON = JSON.stringify(cartState);
+
+      localStorage.setItem('@coffee-delivery:cart-state-1.0.0', stateJSON);
+    }
+  }, [cartState]);
+
   return (
     <CartContext.Provider
       value={{
@@ -56,7 +96,8 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
         addItem,
         removeItem,
         incrementItemQuantity,
-        decrementItemQuantity
+        decrementItemQuantity,
+        createOrder
       }}
     >
       {children}
